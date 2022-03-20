@@ -6,7 +6,7 @@ const app = express();
 const PORT = 3000;
 
 // MIDDLE WARES
-
+app.use(express.json());
 
 // ROUTES
 app.use('/api/v1/tasks', taskRouter);
