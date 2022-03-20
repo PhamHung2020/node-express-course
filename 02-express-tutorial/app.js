@@ -1,8 +1,8 @@
 const express = require('express');
 //const path = require('path');
 const morgan = require('morgan');
-const { products, people } = require('./data');
 const logger = require('./logger');
+const productRouter = require('./routes/product.route');
 
 const app = express();
 
@@ -27,38 +27,7 @@ app.get('/', (req, res) => {
     return res.redirect('/api/products');
 })
 
-app.get('/api/products', (req, res) => {
-    let returnProducts = products.map(product => {
-        const { id, name, image} = product;
-        return { id, name, image };
-    })
-
-    const { search, limit} = req.query;
-    if (search) {
-        returnProducts = returnProducts.filter(
-            product => product.name.includes(search)
-        );
-    }
-
-    if (Number(limit)) {
-        returnProducts = returnProducts.slice(0, Number(limit));
-    }
-
-    if (returnProducts.length === 0) {
-        return res.status(200).json({ error: 'Cannot find any products matched your search'})
-    }
-
-    return res.json(returnProducts);
-})
-
-app.get('/api/products/:productId', (req, res) => {
-    const productId = req.params.productId;
-    const singleProduct = products.find(product => product.id === Number(productId));
-    if (!singleProduct) {
-        return res.status(404).json({ error: 'Cannot find any products'});
-    }
-    return res.json(singleProduct);
-})
+app.use('/api/products', productRouter);
 
 app.get('/about', (req, res) => {
     res.send('About');
