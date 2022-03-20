@@ -2,6 +2,8 @@ const express = require('express');
 const taskRouter = require('./routes/tasks.route');
 const connectDb = require('./db/connect.db');
 const notFoundMiddleware = require('./middlewares/notFound.middleware');
+const errorHandlerMiddleware = require('./middlewares/errorHandler.middleware');
+
 require('dotenv').config();
 
 const app = express();
@@ -21,6 +23,8 @@ app.use('/api/v1/tasks', taskRouter);
 // DELETE /api/v1/tasks/:id - delete task
 
 app.use(notFoundMiddleware);
+app.use(errorHandlerMiddleware);
+
 const startServer = async () => {
     try {
         //console.log(process.env.MONGO_URI);
