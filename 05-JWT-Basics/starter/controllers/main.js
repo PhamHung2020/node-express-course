@@ -20,26 +20,11 @@ const login = (req, res) => {
 }
 
 const dashboard = (req, res) => {
-    const authHeader = req.headers.authorization;
-    if (!authHeader || !authHeader.startsWith('Bearer ')) {
-        throw new CustomAPIError('No token provided', 401);
-    }
-
-    const token = authHeader.split(' ')[1];
-    if (!token) {
-        throw new CustomAPIError('Token is invalid', 401);
-    }
-
-    try {
-        const decoded = jwt.verify(token, process.env.JWT_SECRET);
-        const secret = Math.floor(Math.random() * 100);
-        res.status(200).json({
-            username: decoded.username, 
-            message: `Your secret is ${secret}`
-        });
-    } catch (error) {
-        throw new CustomAPIError('No authorized info provided', 401);
-    }
+    const secret = Math.floor(Math.random() * 100);
+    res.status(200).json({
+        username: req.user.username, 
+        message: `Your secret is ${secret}`
+    });
 }
 
 module.exports = {
