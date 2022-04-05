@@ -1,8 +1,13 @@
 require('dotenv').config();
 require('express-async-errors');
 const express = require('express');
-const app = express();
+const helmet = require('helmet');
+const cors = require('cors');
+const xss = require('xss-clean');
+const rateLimiter = require('express-rate-limit');
 
+const app = express();
+app.set('trust proxy', 1);
 // connect
 const connectDb = require('./db/connect');
 // router
@@ -18,7 +23,14 @@ const errorHandlerMiddleware = require('./middleware/error-handler');
 
 app.use(express.json());
 // extra packages
-
+app.use(rateLimiter({
+  windowMs: 15 * 60 * 1000,
+  max: 100,
+  standardHeaders: true,
+}))
+app.use(helmet());
+app.use(cors());
+app.use(xss())
 // routes
 app.get('/', (req, res) => {
   res.send('jobs api');
