@@ -1,6 +1,6 @@
 const express = require('express');
 const {
-    getAllProduct,
+    getAllProducts,
     createProduct
 } = require('../controllers/productController');
 const { uploadProductImage } = require('../controllers/uploadsController');
@@ -8,6 +8,6 @@ const { uploadProductImage } = require('../controllers/uploadsController');
 const router = express.Router();
 
 router.route('/upload').post(uploadProductImage);
-router.route('/').get(getAllProduct).post(createProduct);
+router.route('/').get(getAllProducts).post(createProduct);
 
 module.exports = router;
