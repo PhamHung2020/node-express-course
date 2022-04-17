@@ -7,7 +7,7 @@ const { uploadProductImage } = require('../controllers/uploadsController');
 
 const router = express.Router();
 
-router.route('/upload').post(uploadProductImage);
+router.route('/uploads').post(uploadProductImage);
 router.route('/').get(getAllProducts).post(createProduct);
 
 module.exports = router;
